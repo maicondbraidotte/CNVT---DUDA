@@ -285,7 +285,7 @@
 <div class="rsvp-card"><div class="animals">🐾 🦒 🐾</div><h2>Lista de presença</h2><p>Confirme sua presença para ajudar a família a organizar essa aventura!</p>
 <form id="rsvp"><label for="guest">Nome do convidado</label><input id="guest" required="" placeholder="Digite seu nome">
 <label for="attendance">Você poderá comparecer?</label><select id="attendance" required=""><option value="">Selecione uma opção</option><option>Sim, estarei presente!</option><option>Não poderei comparecer</option></select>
-<label for="people">Quantas pessoas irão com você? (incluindo você)</label><select id="people"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6 ou mais</option></select>
+<label for="people">Nomes dos acompanhantes</label><input id="people" placeholder="Ex: João, Maria, Pedro">
 <button class="btn" type="submit">Enviar confirmação</button><p id="status" aria-live="polite"></p>
 </form><p style="font-size:12px">Ao enviar, a confirmação será registrada em uma planilha e você será levado para o WhatsApp com a mensagem de confirmação de presença!.</p>
 </div></div></section>
@@ -325,7 +325,7 @@
     const statusEl = document.getElementById('status');
     const name = document.getElementById('guest').value.trim();
     const attending = document.getElementById('attendance').value;
-    const people = document.getElementById('people').value;
+    const people = document.getElementById('people').value.trim();
 
     if (!name || !attending) {
       statusEl.textContent = 'Preencha seu nome e a confirmação antes de enviar.';
@@ -335,7 +335,7 @@
     const payload = {
       name,
       attending,
-      people,
+      people: people || 'Nenhum acompanhante',
       eventDate: '05/12/2026 às 12h',
       createdAt: new Date().toISOString()
     };
@@ -354,7 +354,7 @@
 
       statusEl.textContent = 'Confirmação registrada com sucesso!';
 
-      const whatsappMessage = 'Estou confirmando minha presença no aniversário da Maria Eduarda!';
+      const whatsappMessage = `Estou confirmando minha presença no aniversário da Maria Eduarda!\n\nNome: ${name}\nAcompanhantes: ${people || 'Nenhum'}`;
       const whatsappUrl = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(whatsappMessage);
 
       setTimeout(() => {
